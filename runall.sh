@@ -5,7 +5,7 @@ OLDDIR=$(pwd)
 if [ ! -e /tmp/sample_ccdas-master ]; then
     cd /tmp/
     wget -q --no-check-certificate https://github.com/chb/sample_ccdas/archive/master.tar.gz -O master.tar.gz
-    tar xzvf master.tar.gz
+    tar xzf master.tar.gz
 fi
 
 cd ${OLDDIR}/src
