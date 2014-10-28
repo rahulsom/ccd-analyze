@@ -21,7 +21,7 @@ This is what your script should look like
 
 ```groovy
 /**
- * This script predicts which of the CCDs need the cure for cancer.
+ * This script prints the frequency of each section in the CCD
  */
 import groovy.transform.BaseScript
 
@@ -49,7 +49,7 @@ result.each {k, v -> println "$k - ${v.count} - ${v.title}" }
 2. Declare the `@BaseScript` to be `CcdAnalysis`. That lets users run all scripts
 in an identical way.
 3. Use the property `files` to access all CCDs available to you.
-4. Name your script in a meaningful way, e.g. `CureForCancer.groovy`
+4. Name your script in a meaningful way, e.g. `SectionFrequency.groovy`
 5. Optionally if you need static typing, use `@Grab('com.github.rahulsom:ihe-iti:0.8')
 `.
 
