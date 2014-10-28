@@ -35,10 +35,12 @@ abstract class CcdAnalysis extends Script{
     }
 
     List<File> accumulate(List<File> sum, File f) {
-        if (f.isDirectory()) {
+        if (f.isDirectory() && f.name != '.git') {
             f.listFiles().inject sum, {List<File> s1, f1 -> accumulate(s1, f1)}
-        } else {
+        } else if (f.name.endsWith(".xml")){
             sum + f
+        } else {
+            sum
         }
     }
 
