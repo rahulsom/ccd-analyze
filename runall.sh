@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 cd /tmp/
 wget -q --no-check-certificate https://github.com/chb/sample_ccdas/archive/master.tar.gz
 tar xzvf master
