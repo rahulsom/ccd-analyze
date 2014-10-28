@@ -1,3 +1,4 @@
+![https://travis-ci.org/rahulsom/ccd-analyze.svg](https://travis-ci.org/rahulsom/ccd-analyze.svg)
 ccd-analyze
 ====
 
