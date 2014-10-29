@@ -15,13 +15,16 @@
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
 import groovyx.gpars.GParsPool
+import groovy.transform.BaseScript
+
+@BaseScript CcdAnalysis script
 
 int familyMemberCount = 0
 int familyStatusCount = 0 //no statuses found... unless StatusCode was it...
 int familyIllnessCount = 0
 
 def allTables = [familyMember:[:], familyIllness:[:]]
-def arrayOfFiles = new File("/Users/brian.jong/desktop/certify-ccds").listFiles()
+def arrayOfFiles = files
 
 /*
 * The closure passed here gets the benefits of added methods for GPars concurrency models based on executor pools.
