@@ -23,4 +23,7 @@ cd src
 
 ls -1tr | grep -v ^\\. |\
    grep -v "CcdAnalysis.groovy" | \
-   while read -r i; do groovy "$i" ${DATADIR} > ../out/results/${i}.out ; done
+   while read -r i; do
+      grep "@BaseScript *CcdAnalysis *script" "${i}"
+      groovy "$i" ${DATADIR} > ../out/results/${i}.out
+   done
