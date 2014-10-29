@@ -1,17 +1,19 @@
 import groovyx.gpars.GParsPool
 import groovyx.gpars.GParsPoolUtil
+import groovy.transform.BaseScript
 
-import java.util.concurrent.atomic.AtomicInteger
+@BaseScript CcdAnalysis script
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
 /**
+ * This script prints the frequency of each section in the CCD
  * Created by penny.lischer on 10/23/14.
  */
 
 def problemCounters=[ccdWithProblems:0, name:0, date:0]
 
-def arrayOfFiles = new File("/Users/penny.lischer/documents/certify-ccds").listFiles()
-
+//def arrayOfFiles = new File("/Users/penny.lischer/documents/certify-ccds").listFiles()
+def arrayOfFiles = files
 
 def parallelCollection = GParsPool.withPool {
 
