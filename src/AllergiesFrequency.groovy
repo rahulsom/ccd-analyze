@@ -13,6 +13,7 @@
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
 import groovyx.gpars.GParsPool
+import groovy.transform.BaseScript
 
 @BaseScript CcdAnalysis script
 
