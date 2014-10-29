@@ -6,6 +6,7 @@
 abstract class CcdAnalysis extends Script{
     long startTime
     String[] cliArgs
+    boolean filesCalled = false
 
     @Override
     def run() {
@@ -24,6 +25,9 @@ abstract class CcdAnalysis extends Script{
     def after()  {
         long endTime = System.nanoTime()
         println "Script ended at ${new Date()} and took ${(endTime - startTime)/10E6} ms"
+        if (!filesCalled) {
+            throw new RuntimeException("Script did not use files")
+        }
     }
 
     def getDirectory() {
@@ -45,6 +49,7 @@ abstract class CcdAnalysis extends Script{
     }
 
     def getFiles() {
+        filesCalled = true
         new File(directory).listFiles().inject([]) { List<File> sum, f ->
             accumulate(sum, f)
         }
