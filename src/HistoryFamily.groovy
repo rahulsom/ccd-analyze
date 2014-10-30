@@ -10,7 +10,7 @@
     Result
     Family Member count - 2933
     Illness count - 4515
-    
+
     total entries - 4515
     total family history CCDs - 2056
     total valid family history CCDs - 1398
@@ -63,10 +63,13 @@ GParsPool.withPool {
                                 allTables['familyMember'][item] = 1
                             }
                         }
+                        else {
+                            println "no fam member: - ${file.name}"
+                        }
 
                         def observation = entry.organizer.component.observation
                         //look for illness
-                        String illnessText = observation.text.text()
+                        String illnessText = observation.text.text().trim()
 
                         if (illnessText) {
                             def item = illnessText.toLowerCase().trim();
@@ -75,6 +78,9 @@ GParsPool.withPool {
                             } else {
                                 allTables['familyIllness'][item] = 1
                             }
+                        }
+                        else {
+                            println "no illness: - ${file.name}"
                         }
 
                         ccdWithValidEntries |= (familyMemberText || illnessText)

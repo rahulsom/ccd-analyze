@@ -1,18 +1,18 @@
 /**
-    Created by brian.jong on 10/27/14.
+ Created by brian.jong on 10/27/14.
 
-    29762-2 - 2411 - Social History
-    • Social
-        o Use
-        o Frequency
+ 29762-2 - 2411 - Social History
+ • Social
+ o Use
+ o Frequency
 
-    Result
-    Use count - 7661
-    Frequency count - 398
-    total entries - 9052
-    total social history CCDs - 2411
-    total valid social history CCDs - 2025
-*/
+ Result
+ Use count - 9052
+ Frequency count - 398
+ total entries - 9052
+ total social history CCDs - 2411
+ total valid social history CCDs - 2025
+ */
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
 import groovyx.gpars.GParsPool
@@ -51,9 +51,22 @@ GParsPool.withPool {
 
                         //look for social name
                         String socialText = observation.text.text().trim()
+                        def socialItem
 
                         if (socialText) {
-                            def socialItem = socialText.toLowerCase().trim();
+                            socialItem = socialText.toLowerCase().trim()
+                        }
+                        else {
+                            String referenceValue = observation.text.reference.@value.text().replace('#', '')
+                            if(referenceValue) {
+                                def textBody = section.text.table.tbody
+                                def usdAllergyRef = textBody.depthFirst().find { it.@ID.text().equalsIgnoreCase(referenceValue) }
+                                if (usdAllergyRef && usdAllergyRef.text()) {
+                                    socialItem = usdAllergyRef.text().toLowerCase().trim()
+                                }
+                            }
+                        }
+                        if(socialItem) {
                             if (allTables['socialUse'].containsKey(socialItem)) {
                                 allTables['socialUse'][socialItem]++
                             } else {
@@ -64,13 +77,15 @@ GParsPool.withPool {
                         String frequency = observation.value.text().trim()
 
                         if (frequency) {
-                            def socialItem = frequency.toLowerCase().trim();
+                            socialItem = frequency.toLowerCase().trim();
                             if (allTables['socialFrequency'].containsKey(socialItem)) {
                                 allTables['socialFrequency'][socialItem]++
                             } else {
                                 allTables['socialFrequency'][socialItem] = 1
                             }
                         }
+                        else
+                            println "no freq: ${file.name}"
 
                         ccdWithValidEntries |= (socialText || frequency)
                     }
@@ -82,20 +97,20 @@ GParsPool.withPool {
             allTables['totalValidCcds']++
     }
 }
-
-allTables['socialUse'].each { k, v ->
-    useCount += v
-    println "$k - $v"
-}
-println()
-allTables['socialFrequency'].each { k, v ->
-    frequencyCount += v
-    println "$k - $v"
-}
-println()
-println "Use count - ${useCount}"
-println "Frequency count - ${frequencyCount}"
-println "total entries - ${allTables['totalEntries']}"
-println "total social history CCDs - ${allTables['totalCcds']}"
-println "total valid social history CCDs - ${allTables['totalValidCcds']}"
-println()
+//
+//allTables['socialUse'].each { k, v ->
+//    useCount += v
+//    println "$k - $v"
+//}
+//println()
+//allTables['socialFrequency'].each { k, v ->
+//    frequencyCount += v
+//    println "$k - $v"
+//}
+//println()
+//println "Use count - ${useCount}"
+//println "Frequency count - ${frequencyCount}"
+//println "total entries - ${allTables['totalEntries']}"
+//println "total social history CCDs - ${allTables['totalCcds']}"
+//println "total valid social history CCDs - ${allTables['totalValidCcds']}"
+//println()

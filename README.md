@@ -51,8 +51,7 @@ result.each {k, v -> println "$k - ${v.count} - ${v.title}" }
 in an identical way.
 3. Use the property `files` to access all CCDs available to you.
 4. Name your script in a meaningful way, e.g. `SectionFrequency.groovy`
-5. Optionally if you need static typing, use `@Grab('com.github.rahulsom:ihe-iti:0.8')
-`.
+5. Optionally if you need static typing, use `@Grab('com.github.rahulsom:ihe-iti:0.8')`
 
 For every other aspect, this is just another groovy script.
 
