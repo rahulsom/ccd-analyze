@@ -24,7 +24,7 @@ int useCount = 0
 int frequencyCount = 0
 
 def allTables = [socialUse:[:], socialFrequency:[:], totalEntries:0, totalCcds:0, totalValidCcds:0]
-def arrayOfFiles = new File("/Users/brian.jong/desktop/certify-ccds").listFiles()
+def arrayOfFiles = files
 
 /*
 * The closure passed here gets the benefits of added methods for GPars concurrency models based on executor pools.
