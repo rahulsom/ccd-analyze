@@ -7,7 +7,7 @@ import groovy.transform.BaseScript
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
 /**
- * This script prints the frequency of each section in the CCD
+ * This script prints the frequency of each Lab Result in the CCDs
  * Created by penny.lischer on 10/23/14.
  */
 
