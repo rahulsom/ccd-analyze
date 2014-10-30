@@ -99,20 +99,20 @@ GParsPool.withPool {
             allTables['totalValidCcds']++
     }
 }
-//
-//allTables['socialUse'].each { k, v ->
-//    useCount += v
-//    println "$k - $v"
-//}
-//println()
-//allTables['socialFrequency'].each { k, v ->
-//    frequencyCount += v
-//    println "$k - $v"
-//}
-//println()
-//println "Use count - ${useCount}"
-//println "Frequency count - ${frequencyCount}"
-//println "total entries - ${allTables['totalEntries']}"
-//println "total social history CCDs - ${allTables['totalCcds']}"
-//println "total valid social history CCDs - ${allTables['totalValidCcds']}"
-//println()
+
+allTables['socialUse'].each { k, v ->
+    useCount += v
+    println "$k - $v"
+}
+println()
+allTables['socialFrequency'].each { k, v ->
+    frequencyCount += v
+    println "$k - $v"
+}
+println()
+println "Use count - ${useCount}"
+println "Frequency count - ${frequencyCount}"
+println "total entries - ${allTables['totalEntries']}"
+println "total social history CCDs - ${allTables['totalCcds']}"
+println "total valid social history CCDs - ${allTables['totalValidCcds']}"
+println()
