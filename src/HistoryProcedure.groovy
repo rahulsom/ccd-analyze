@@ -7,11 +7,14 @@
  o	Date
 
  Result
- Surgeries count - 120463
- Dates count - 40926
+ History: Surgeries
+
+ Surgeries count - 130817
+ Dates count - 130817
  total entries - 130817
  total procedure CCDs - 7576
- total valid procedure CCDs - 7387
+ total valid procedure CCDs - 7388
+
  */
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
@@ -25,7 +28,7 @@ int surgeryCount = 0
 int dateCount = 0
 
 def allTables = [surgeries:[:], dates:[:], totalEntries:0, totalCcds:0, totalValidCcds:0]
-def arrayOfFiles = new File("/Users/brian.jong/desktop/certify-ccds").listFiles()
+def arrayOfFiles = files
 
 /*
 * The closure passed here gets the benefits of added methods for GPars concurrency models based on executor pools.
@@ -55,10 +58,22 @@ GParsPool.withPool {
 
                         def procedureText = "${procedureCodeText}${procedureDisplayNameText}"
 
+                        def item
 
                         if (procedureText) {
-
-                            def item = procedureText.toLowerCase().trim();
+                            item = procedureText.toLowerCase().trim();
+                        }
+                        else {
+                            String referenceValue = procedure.code.originalText.reference.@value.text().replace('#', '')
+                            if(referenceValue) {
+                                def textBody = section.text.table.tbody
+                                def surgeryRef = textBody.depthFirst().find { it.@ID.text().equalsIgnoreCase(referenceValue) }
+                                if (surgeryRef && surgeryRef.text().trim()) {
+                                    item = surgeryRef.text().toLowerCase().trim()
+                                }
+                            }
+                        }
+                        if(item){
                             if (allTables['surgeries'].containsKey(item)) {
                                 allTables['surgeries'][item]++
                             } else {
@@ -68,14 +83,18 @@ GParsPool.withPool {
 
                         //look for date
                         def dateText = procedure.effectiveTime.@value.text().trim()
+                        def dateTextLow = procedure.effectiveTime.low.@value.text().trim()
 
-                        if (dateText) {
-                            def item = dateText
+                        if (dateText || dateTextLow) {
+                            item = dateText ? dateText : dateTextLow
                             if (allTables['dates'].containsKey(item)) {
                                 allTables['dates'][item]++
                             } else {
                                 allTables['dates'][item] = 1
                             }
+                        }
+                        else {
+                            println "No date: ${file.name}"
                         }
 
                         ccdWithValidEntries |= (procedureText || dateText)

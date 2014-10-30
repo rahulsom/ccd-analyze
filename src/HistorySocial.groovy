@@ -7,6 +7,8 @@
  o Frequency
 
  Result
+ History: Social
+
  Use count - 9052
  Frequency count - 398
  total entries - 9052

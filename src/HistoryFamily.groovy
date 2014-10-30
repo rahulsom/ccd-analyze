@@ -8,12 +8,13 @@
     o Illness
 
     Result
+    History: Family
+
     Family Member count - 2933
     Illness count - 4515
-
     total entries - 4515
     total family history CCDs - 2056
-    total valid family history CCDs - 1398
+    total valid family history CCDs - 1397
  */
 
 @Grab("org.codehaus.gpars:gpars:1.2.1")
