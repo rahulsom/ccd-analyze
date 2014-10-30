@@ -46,53 +46,57 @@ GParsPool.withPool {
                             String referenceValue = medicationSubstance.consumable.manufacturedProduct.manufacturedMaterial.code.originalText.reference.@value.text().replace('#', '')
 //                            println 'ReferenceValue: ' + referenceValue
 
-                            //loop through unstructured data to find the referenceId & matching medName
-                            def textBody = section.text.table.tbody.tr
-                            def usdMedRef = textBody.depthFirst().find{ it.@ID.text().equalsIgnoreCase(referenceValue) }
-                            if(usdMedRef) {
-                                def medName = usdMedRef.text()
+                            if(referenceValue){
+                                //loop through unstructured data to find the referenceId & matching medName
+                                def textBody = section.text.table.tbody.tr
+                                def usdMedRef = textBody.depthFirst().find{ it.@ID.text().equalsIgnoreCase(referenceValue) }
+                                if(usdMedRef) {
+                                    def medName = usdMedRef.text()
 //                                println medName
-                                if (medName) {
-                                    if (firstTimeInCCD) {
-                                        firstTimeInCCD = false
-                                        mapOfCounters['numberOfCCDWithMedications']++
-                                    }
+                                    if (medName) {
+                                        if (firstTimeInCCD) {
+                                            firstTimeInCCD = false
+                                            mapOfCounters['numberOfCCDWithMedications']++
+                                        }
+                                        //save valid medication
 //                                    mapOfMedName.put(referenceValue, medName)
-                                    mapOfCounters['validMedRecords']++
-                                } else {
-                                    //null medication names
+                                        mapOfCounters['validMedRecords']++
+
+                                        //medication time
+                                        if(medicationSubstance.effectiveTime.low.@value.text()){
+                                            mapOfCounters['medStartDates']++
+                                        }
+                                        if(medicationSubstance.effectiveTime.high.@value.text()){
+                                            mapOfCounters['medEndDates']++
+                                        }
+
+                                        //status
+                                        def medStatus = medicationSubstance.entryRelationship.observation.value.@displayName.text()
+                                        if(medStatus){
+                                            mapOfCounters['medStatus']++
+                                            //number of different medication statuses
+                                            if (mapOfStatus.containsKey(medStatus)) {
+                                                mapOfStatus[medStatus]++
+                                            } else {
+                                                mapOfStatus[medStatus] = 1
+                                            }
+                                        }
+
+                                        //perscriber
+                                        if(medicationSubstance.entryRelationship.supply.author.assignedAuthor.assignedPerson.name.given.text()
+                                                || medicationSubstance.entryRelationship.supply.author.assignedAuthor.assignedPerson.name.family.text()) {
+                                            mapOfCounters['medPrescribers']++;
+                                        }
+
+                                    } else {
+                                        //null medication names
+                                        mapOfCounters['nullMedRecords']++
+                                    }
+                                }else
+                                {
+                                    //un-identified reference values
                                     mapOfCounters['nullMedRecords']++
                                 }
-                            }else
-                            {
-                                //un-identified reference values
-                                mapOfCounters['nullMedRecords']++
-                            }
-
-                            //medication time
-                            if(medicationSubstance.effectiveTime.low.@value.text()){
-                                mapOfCounters['medStartDates']++
-                            }
-                            if(medicationSubstance.effectiveTime.high.@value.text()){
-                                mapOfCounters['medEndDates']++
-                            }
-
-                            //status
-                            def medStatus = medicationSubstance.entryRelationship.observation.value.@displayName.text()
-                            if(medStatus){
-                                mapOfCounters['medStatus']++
-                                //number of different medication statuses
-                                if (mapOfStatus.containsKey(medStatus)) {
-                                    mapOfStatus[medStatus]++
-                                } else {
-                                    mapOfStatus[medStatus] = 1
-                                }
-                            }
-
-                            //perscriber
-                            if(medicationSubstance.entryRelationship.supply.author.assignedAuthor.assignedPerson.name.given.text()
-                                    || medicationSubstance.entryRelationship.supply.author.assignedAuthor.assignedPerson.name.family.text()) {
-                                mapOfCounters['medPrescribers']++;
                             }
 
                             mapOfCounters['allMedRecords']++;
